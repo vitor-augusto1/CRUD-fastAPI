@@ -32,13 +32,25 @@ async def create_new_user(new_user: User):
         "success": "User created successfully"
     })
 
-@router.get("/api/v1/user/{id}")
-async def get_user(id: UUID):
-    user = [user for user in user_list if user.id == id]
+@router.get("/api/v1/user/{user_id}")
+async def get_user(user_id: UUID):
+    user = [user for user in user_list if user.id == user_id]
     return user
 
-@router.put("/api/v1/user/{id}")
-async def update_user(*, id: UUID, new_user_information: User):
+@router.put("/api/v1/user/{user_id}")
+async def update_user(*, user_id: UUID, new_user_information: User):
+    for user in user_list:
+        if user.id == user_id:
+            user = new_user_information
+            return JSONResponse(status_code=200, content={
+                "success": "User updated successfully"
+            })
+    raise HTTPException(status_code=404, detail={
+        "error": "User not found"
+    })
+
+@router.patch("/api/v1/user/{id}")
+def update_user_information():
     ...
 
 @router.delete("/api/v1/user/{id}")
