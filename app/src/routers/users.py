@@ -2,7 +2,7 @@ from typing import List
 from uuid import UUID, uuid4
 
 from fastapi.responses import JSONResponse
-from user_models import User
+from user_models import User, UpdateUser
 
 from fastapi import APIRouter, HTTPException
 
@@ -49,8 +49,8 @@ async def update_user(*, user_id: UUID, new_user_information: User):
         "error": "User not found"
     })
 
-@router.patch("/api/v1/user/{id}")
-def update_user_information():
+@router.patch("/api/v1/user/{user_id}")
+def update_user_information(*, user_id: UUID, new_user_information: UpdateUser):
     ...
 
 @router.delete("/api/v1/user/{id}")
