@@ -1,3 +1,4 @@
+from typing import List
 from uuid import UUID
 from user_models import User
 
@@ -5,7 +6,14 @@ from fastapi import APIRouter
 
 router = APIRouter()
 
-user = list()
+user: List[User] = [
+    User(
+        first_name="Vitor Augusto",
+        last_name="Guimaraes",
+        age=19,
+        year=2003
+    )
+]
 
 
 @router.post("/api/v1/user")
