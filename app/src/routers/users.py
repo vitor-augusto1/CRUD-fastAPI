@@ -34,7 +34,8 @@ async def create_new_user(new_user: User):
 
 @router.get("/api/v1/user/{id}")
 async def get_user(id: UUID):
-    ...
+    user = [user for user in user_list if user.id == id]
+    return user
 
 @router.put("/api/v1/user/{id}")
 async def update_user(*, id: UUID, new_user_information: User):
