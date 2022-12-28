@@ -75,3 +75,6 @@ async def delete_user(id: UUID):
             i = user_list.index(user)
             del user_list[i]
             return True
+    raise HTTPException(status_code=404, detail={
+        "error": "User not found"
+    })
