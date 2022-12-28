@@ -70,4 +70,8 @@ async def update_user_information(user_id: UUID, new_user_information: UserOptio
 
 @router.delete("/api/v1/user/{id}")
 async def delete_user(id: UUID):
-    ...
+    for user in user_list:
+        if user.id == id:
+            i = user_list.index(user)
+            del user_list[i]
+            return True
