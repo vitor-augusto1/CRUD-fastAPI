@@ -26,7 +26,7 @@ user_list: List[UserBase] = [
 async def create_new_user(new_user: UserCreate):
     if any(new_user.email == user.email for user in user_list):
         raise HTTPException(status_code=409, detail={
-            "error": "User already exists or Invalid email"
+            "error": "User already exists or an Invalid email was provided"
         })
     user_list.append(new_user)
     return JSONResponse(status_code=200, content={
