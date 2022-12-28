@@ -2,7 +2,7 @@ from typing import Optional
 from uuid import UUID, uuid4
 from pydantic import BaseModel
 
-class User(BaseModel):
+class UserBase(BaseModel):
     id: Optional[UUID] = uuid4()
     first_name: str
     email: str
@@ -10,3 +10,13 @@ class User(BaseModel):
     last_name: str
     age: int
     year: int
+
+
+class UserCreate(UserBase):
+    password: str
+
+
+class UserOptional(UserCreate):
+    __annotations__ = {
+        key: Optional[value] for key, value in UserCreate.__annotations__.items()
+    }
