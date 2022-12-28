@@ -1,3 +1,5 @@
+from utils.convert_to_optional import convert_to_optional
+
 from typing import Optional
 from uuid import UUID, uuid4
 from pydantic import BaseModel
@@ -17,6 +19,4 @@ class UserCreate(UserBase):
 
 
 class UserOptional(UserCreate):
-    __annotations__ = {
-        key: Optional[value] for key, value in UserCreate.__annotations__.items()
-    }
+    __annotations__ = convert_to_optional(UserCreate)
