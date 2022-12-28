@@ -2,7 +2,7 @@ from typing import List
 from uuid import UUID, uuid4
 
 from fastapi.responses import JSONResponse
-from user_models import User, UpdateUser
+from user_models import User
 
 from fastapi import APIRouter, HTTPException
 
@@ -18,7 +18,6 @@ user_list: List[User] = [
         year=2003
     )
 ]
-print(user_list[0].id)
 
 
 @router.post("/api/v1/user")
@@ -32,13 +31,15 @@ async def create_new_user(new_user: User):
         "success": "User created successfully"
     })
 
+
 @router.get("/api/v1/user/{user_id}")
 async def get_user(user_id: UUID):
     user = [user for user in user_list if user.id == user_id]
     return user
 
+
 @router.put("/api/v1/user/{user_id}")
-async def update_user(*, user_id: UUID, new_user_information: User):
+async def update_user(user_id: UUID, new_user_information: User):
     for user in user_list:
         if user.id == user_id:
             user = new_user_information
@@ -49,9 +50,11 @@ async def update_user(*, user_id: UUID, new_user_information: User):
         "error": "User not found"
     })
 
+
 @router.patch("/api/v1/user/{user_id}")
-def update_user_information(*, user_id: UUID, new_user_information: UpdateUser):
+def update_user_information(user_id: UUID, new_user_information: User):
     ...
+
 
 @router.delete("/api/v1/user/{id}")
 async def delete_user(id: UUID):
