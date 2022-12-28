@@ -1,3 +1,5 @@
 venv
 app/src/__pycache__
 app/src/routers/__pycache__
+app/src/__pycache__
+app/src/utils/__pycache__
