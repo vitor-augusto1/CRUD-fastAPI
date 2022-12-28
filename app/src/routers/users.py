@@ -47,7 +47,7 @@ async def get_user(user_id: UUID):
 
 
 @router.put("/api/v1/user/{user_id}")
-async def update_user(user_id: UUID, new_user_information: UserCreate):
+async def update_user(user_id: UUID, new_user_information: UserBase):
     for user in user_list:
         if user.id == user_id:
             i = user_list.index(user)
