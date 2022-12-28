@@ -1,3 +1,3 @@
 # CRUD-fastAPI
 
-Simple CRUD using fastAPI
+CRUD API using fastAPI
