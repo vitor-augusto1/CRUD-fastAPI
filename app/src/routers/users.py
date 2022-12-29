@@ -3,7 +3,7 @@ from uuid import UUID
 from fastapi.encoders import jsonable_encoder
 
 from fastapi.responses import JSONResponse
-from user_models import UserBase, UserCreate, UserOptional
+from user_schema import UserBase, UserCreate, UserOptional
 
 from fastapi import APIRouter, HTTPException
 
