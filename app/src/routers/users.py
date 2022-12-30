@@ -13,17 +13,6 @@ User_Model.User.metadata.create_all(bind=engine)
 
 router = APIRouter()
 
-user_list: List[UserBase] = [
-    UserCreate(
-        id=UUID("440b410e-9192-4e15-bd59-234e933b411b"),
-        password="asdjcajkdbvjkdvjadcv",
-        first_name="Vitor Augusto",
-        email="vitor@vitor.com",
-        last_name="Guimaraes",
-        age=19,
-        year=2003
-    )
-]
 def get_database():
     database_session = SessionLocal()
     try:
