@@ -6,6 +6,7 @@ from uuid import UUID, uuid4
 from pydantic import BaseModel
 
 class UserBase(BaseModel):
+    id: UUID = uuid4()
     first_name: str
     email: str
     password: str
@@ -16,8 +17,7 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    id: UUID
-
+    pass
 
 class UserOptional(UserBase):
     __annotations__ = convert_to_optional(UserBase)
