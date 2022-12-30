@@ -26,10 +26,18 @@ async def create_new_user(new_user: UserCreate):
     if any(new_user.email == user.email for user in user_list):
         raise HTTPException(status_code=409, detail={
             "error": "User already exists or an Invalid email was provided"
+async def create_new_user(new_user: UserCreate, database: Session = Depends(get_database)):
+    user = database_actions.get_user_by_email(database, new_user.email)
+    print(user)
+    if user:
+        raise HTTPException(status_code=400, detail={
+            "error": "Email already registered"
         })
-    user_list.append(new_user)
+    user_created = database_actions.create_new_user(
+        database_session=database, new_user=new_user
+    )
     return JSONResponse(status_code=200, content={
-        "success": "User created successfully"
+        "success": jsonable_encoder(user_created)
     })
 
 
