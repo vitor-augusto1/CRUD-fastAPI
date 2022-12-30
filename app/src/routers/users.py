@@ -1,17 +1,17 @@
 from typing import List
 from uuid import UUID
 from fastapi.encoders import jsonable_encoder
-
 from fastapi.responses import JSONResponse
 from fastapi import APIRouter, Depends, HTTPException
+
 from user_schema import UserBase, UserCreate, UserOptional
 from database.connection import SessionLocal, engine
 from database import database_actions, User_Model
 
-from fastapi import APIRouter, HTTPException
 User_Model.User.metadata.create_all(bind=engine)
 
 router = APIRouter()
+
 
 def get_database():
     database_session = SessionLocal()
@@ -34,15 +34,6 @@ async def create_new_user(new_user: UserCreate):
 
 
 @router.get("/api/v1/user/{user_id}")
-async def get_user(user_id: UUID):
-    for user in user_list:
-        if user.id == user_id:
-            return JSONResponse(status_code=200, content={
-                "user": jsonable_encoder(user)
-            })
-    raise HTTPException(status_code=404, detail={
-        "error": "User does not exists"
-    })
 async def get_user(user_id: UUID, database = Depends(get_database)):
     user = database_actions.get_user_by_id(database, user_id)
     print(user)
