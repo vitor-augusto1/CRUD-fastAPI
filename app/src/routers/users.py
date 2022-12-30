@@ -54,6 +54,9 @@ async def get_user(user_id: UUID):
     raise HTTPException(status_code=404, detail={
         "error": "User does not exists"
     })
+async def get_user(user_id: UUID, database = Depends(get_database)):
+    user = database_actions.get_user_by_id(database, user_id)
+    print(user)
 
 
 @router.put("/api/v1/user/{user_id}")
