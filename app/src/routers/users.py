@@ -24,6 +24,12 @@ user_list: List[UserBase] = [
         year=2003
     )
 ]
+def get_database():
+    database_session = SessionLocal()
+    try:
+        yield database_session
+    finally:
+        database_session.close()
 
 
 @router.post("/api/v1/user")
