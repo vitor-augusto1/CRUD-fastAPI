@@ -9,7 +9,7 @@ from user_schema import UserBase, UserCreate, UserOptional
 from database.connection import SessionLocal, engine
 from database import database_actions, User_Model
 
-User_Model.User.metadata.create_all(bind=engine)
+#User_Model.User.metadata.create_all(bind=engine)
 
 router = APIRouter()
 
@@ -23,10 +23,6 @@ def get_database():
 
 
 @router.post("/api/v1/user")
-async def create_new_user(new_user: UserCreate):
-    if any(new_user.email == user.email for user in user_list):
-        raise HTTPException(status_code=409, detail={
-            "error": "User already exists or an Invalid email was provided"
 async def create_new_user(new_user: UserCreate, database: Session = Depends(get_database)):
     user = database_actions.get_user_by_email(database, new_user.email)
     print(user)
@@ -41,9 +37,7 @@ async def create_new_user(new_user: UserCreate, database: Session = Depends(get_
         "success": jsonable_encoder(user_created)
     })
 
-
 @router.get("/api/v1/user/{user_id}")
-async def get_user(user_id: UUID, database = Depends(get_database)):
 async def get_user(user_id: UUID, database: Session = Depends(get_database)):
     user = database_actions.get_user_by_id(database, user_id)
     if user is None:
