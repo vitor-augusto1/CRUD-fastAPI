@@ -1,7 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from connection import Base, Session, engine
-
-session = Session()
+from .connection import Base
 
 class User(Base):
     __tablename__ = "users"
@@ -17,3 +15,4 @@ class User(Base):
 
     def __repr__(self) -> str:
         return f'{self.first_name} {self.last_name} - {self.id}'
+
