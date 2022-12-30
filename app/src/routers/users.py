@@ -35,6 +35,7 @@ async def create_new_user(new_user: UserCreate):
 
 @router.get("/api/v1/user/{user_id}")
 async def get_user(user_id: UUID, database = Depends(get_database)):
+async def get_user(user_id: UUID, database: Session = Depends(get_database)):
     user = database_actions.get_user_by_id(database, user_id)
     if user is None:
         raise HTTPException(status_code=404, detail={
