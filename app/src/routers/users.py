@@ -38,6 +38,7 @@ async def create_new_user(new_user: UserCreate,
         "success": jsonable_encoder(user_created)
     })
 
+
 @router.get("/api/v1/user/{user_id}")
 async def get_user(user_id: UUID, database: Session = Depends(get_database)):
     user = database_actions.get_user_by_id(database, user_id)
@@ -85,7 +86,8 @@ async def update_user_information(
 
 
 @router.delete("/api/v1/user/{user_id}")
-async def delete_user(user_id: UUID, database_session: Session = Depends(get_database)):
+async def delete_user(user_id: UUID,
+                      database_session: Session = Depends(get_database)):
     stored_user = database_actions.get_user_by_id(database_session, user_id)
     if stored_user is None:
         raise HTTPException(status_code=404, detail={
