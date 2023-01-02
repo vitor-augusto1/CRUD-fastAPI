@@ -85,6 +85,6 @@ async def delete_user(user_id: UUID, database_session: Session = Depends(get_dat
         raise HTTPException(status_code=404, detail={
             "error": "User not found"
         })
-    return JSONResponse(status_code=200, content=database_actions.delete_user_by_id(
+    return JSONResponse(status_code=200, content=database_actions.delete_user(
         database_session, stored_user
     ))
