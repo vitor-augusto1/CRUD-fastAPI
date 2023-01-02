@@ -23,7 +23,8 @@ def get_database():
 
 
 @router.post("/api/v1/user")
-async def create_new_user(new_user: UserCreate, database: Session = Depends(get_database)):
+async def create_new_user(new_user: UserCreate, 
+                          database: Session = Depends(get_database)):
     user = database_actions.get_user_by_email(database, new_user.email)
     print(user)
     if user:
