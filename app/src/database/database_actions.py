@@ -26,6 +26,18 @@ def create_new_user(database_session: Session, new_user: UserCreate):
     database_session.refresh(new_user)
     return new_user
 
+
+def update_user(database_session: Session, stored_user: User,
+                new_user_information: UserOptional | UserBase):
+    new_data = new_user_information.dict(exclude_unset=True)
+    for key, value in new_data.items():
+        setattr(stored_user, key, value)
+    database_session.add(stored_user)
+    database_session.commit()
+    database_session.refresh(stored_user)
+    return stored_user
+
+
 def delete_user(database_session: Session, user: User):
     print(user)
     database_session.delete(user)
