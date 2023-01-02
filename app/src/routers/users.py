@@ -67,18 +67,21 @@ async def update_user(user_id: UUID, new_user_information: UserBase,
 
 
 @router.patch("/api/v1/user/{user_id}")
-async def update_user_information(user_id: UUID, new_user_information: UserOptional):
-    for stored_user in user_list:
-        if stored_user.id == user_id:
-            stored_user_model = UserOptional(**dict(stored_user))
-            new_user_data = new_user_information.dict(exclude_unset=True)
-            updated_User = stored_user_model.copy(update=new_user_data)
-            i = user_list.index(stored_user)
-            user_list[i] = updated_User
-            return updated_User
-    raise HTTPException(status_code=400, detail={
-        "error": "User not found"
-    })
+async def update_user_information(
+    user_id: UUID, new_user_information: UserOptional,
+    database_session: Session = Depends(get_database)):
+
+    stored_user = database_actions.get_user_by_id(database_session, user_id)
+    if stored_user is None:
+        raise HTTPException(status_code=404, detail={
+            "error": "User not found"
+        })
+    return JSONResponse(
+        status_code=200,
+        content=jsonable_encoder(database_actions.update_user(
+            database_session, stored_user, new_user_information
+        ))
+    )
 
 
 @router.delete("/api/v1/user/{user_id}")
