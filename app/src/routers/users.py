@@ -51,17 +51,19 @@ async def get_user(user_id: UUID, database: Session = Depends(get_database)):
 
 
 @router.put("/api/v1/user/{user_id}")
-async def update_user(user_id: UUID, new_user_information: UserBase):
-    for user in user_list:
-        if user.id == user_id:
-            i = user_list.index(user)
-            user_list[i] = new_user_information
-            return JSONResponse(status_code=200, content={
-                "success": "User updated successfully"
-            })
-    raise HTTPException(status_code=404, detail={
-        "error": "User not found"
-    })
+async def update_user(user_id: UUID, new_user_information: UserBase,
+                      database_session: Session = Depends(get_database)):
+    stored_user = database_actions.get_user_by_id(database_session, user_id)
+    if stored_user is None:
+        raise HTTPException(status_code=404, detail={
+            "error": "User not found"
+        })
+    return JSONResponse(
+        status_code=200,
+        content=jsonable_encoder(database_actions.update_user(
+            database_session, stored_user, new_user_information
+        ))
+    )
 
 
 @router.patch("/api/v1/user/{user_id}")
