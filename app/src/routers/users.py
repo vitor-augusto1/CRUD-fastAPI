@@ -78,13 +78,13 @@ async def update_user_information(user_id: UUID, new_user_information: UserOptio
     })
 
 
-@router.delete("/api/v1/user/{id}")
-async def delete_user(id: UUID):
-    for user in user_list:
-        if user.id == id:
-            i = user_list.index(user)
-            del user_list[i]
-            return True
-    raise HTTPException(status_code=404, detail={
-        "error": "User not found"
-    })
+@router.delete("/api/v1/user/{user_id}")
+async def delete_user(user_id: UUID, database_session: Session = Depends(get_database)):
+    stored_user = database_actions.get_user_by_id(database_session, user_id)
+    if stored_user is None:
+        raise HTTPException(status_code=404, detail={
+            "error": "User not found"
+        })
+    return JSONResponse(status_code=200, content=database_actions.delete_user_by_id(
+        database_session, stored_user
+    ))
