@@ -25,3 +25,9 @@ def create_new_user(database_session: Session, new_user: UserCreate):
     database_session.commit()
     database_session.refresh(new_user)
     return new_user
+
+def delete_user(database_session: Session, user: User):
+    print(user)
+    database_session.delete(user)
+    database_session.commit()
+    return {"success": "User deleted successfully"}
