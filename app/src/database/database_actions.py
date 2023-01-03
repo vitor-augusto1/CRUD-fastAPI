@@ -1,3 +1,4 @@
+from utils import HashPassword
 from uuid import UUID
 from sqlalchemy.orm import Session
 
@@ -14,11 +15,12 @@ def get_user_by_email(database_session: Session, user_email: str):
 
 
 def create_new_user(database_session: Session, new_user: UserCreate):
+    hashed_password=HashPassword.bcrypt(new_user.password),
     new_user = User(
         id=new_user.id,
         first_name=new_user.first_name,
         email=new_user.email,
-        password=new_user.password,
+        password=hashed_password,
         middle_name=new_user.middle_name,
         last_name=new_user.last_name,
         age=new_user.age,
