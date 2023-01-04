@@ -17,18 +17,10 @@ router = APIRouter(
 )
 
 
-def get_database():
-    database_session = SessionLocal()
-    try:
-        yield database_session
-    finally:
-        database_session.close()
-
-
 @router.post("/api/v1/user")
 @router.post("/")
 async def create_new_user(new_user: UserCreate,
-                          database: Session = Depends(get_database)):
+                          database: Session = Depends(database_actions.get_database)):
     user = database_actions.get_user_by_email(database, new_user.email)
     print(user)
     if user:
@@ -45,7 +37,7 @@ async def create_new_user(new_user: UserCreate,
 
 @router.get("/api/v1/user/{user_id}")
 @router.get("/{user_id}")
-async def get_user(user_id: UUID, database: Session = Depends(get_database)):
+async def get_user(user_id: UUID, database: Session = Depends(database_actions.get_database)):
     user = database_actions.get_user_by_id(database, user_id)
     if user is None:
         raise HTTPException(status_code=404, detail={
@@ -59,7 +51,7 @@ async def get_user(user_id: UUID, database: Session = Depends(get_database)):
 @router.put("/api/v1/user/{user_id}")
 @router.put("/{user_id}")
 async def update_user(user_id: UUID, new_user_information: UserBase,
-                      database_session: Session = Depends(get_database)):
+                      database_session: Session = Depends(database_actions.get_database)):
     stored_user = database_actions.get_user_by_id(database_session, user_id)
     if stored_user is None:
         raise HTTPException(status_code=404, detail={
@@ -77,7 +69,7 @@ async def update_user(user_id: UUID, new_user_information: UserBase,
 @router.patch("/{user_id}")
 async def update_user_information(
     user_id: UUID, new_user_information: UserOptional,
-    database_session: Session = Depends(get_database)):
+    database_session: Session = Depends(database_actions.get_database)):
 
     stored_user = database_actions.get_user_by_id(database_session, user_id)
     if stored_user is None:
@@ -95,7 +87,7 @@ async def update_user_information(
 @router.delete("/api/v1/user/{user_id}")
 @router.delete("/{user_id}")
 async def delete_user(user_id: UUID,
-                      database_session: Session = Depends(get_database)):
+                      database_session: Session = Depends(database_actions.get_database)):
     stored_user = database_actions.get_user_by_id(database_session, user_id)
     if stored_user is None:
         raise HTTPException(status_code=404, detail={
