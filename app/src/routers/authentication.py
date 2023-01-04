@@ -1,7 +1,9 @@
+from utils.token import create_jwt_access_token
 from login_schema import Login
 from database.User_Model import User
 
 from utils.verify_password import verify_user_password
+from utils.token import create_jwt_access_token
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -25,4 +27,5 @@ def login(login_request: Login, database: Session = Depends(database_actions.get
         raise HTTPException(status_code=404, detail={
             "error": "Invalid Credentials"
         })
-    return user
+    access_token = create_jwt_access_token(data={"sub": user.email})
+    return {"access_token": access_token, "token_type": "bearer"}
