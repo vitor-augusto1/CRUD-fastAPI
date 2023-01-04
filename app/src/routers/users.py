@@ -12,6 +12,9 @@ from database import database_actions, User_Model
 #User_Model.User.metadata.create_all(bind=engine)
 
 router = APIRouter()
+router = APIRouter(
+    prefix="/api/v1/user"
+)
 
 
 def get_database():
@@ -23,6 +26,7 @@ def get_database():
 
 
 @router.post("/api/v1/user")
+@router.post("/")
 async def create_new_user(new_user: UserCreate,
                           database: Session = Depends(get_database)):
     user = database_actions.get_user_by_email(database, new_user.email)
@@ -40,6 +44,7 @@ async def create_new_user(new_user: UserCreate,
 
 
 @router.get("/api/v1/user/{user_id}")
+@router.get("/{user_id}")
 async def get_user(user_id: UUID, database: Session = Depends(get_database)):
     user = database_actions.get_user_by_id(database, user_id)
     if user is None:
@@ -52,6 +57,7 @@ async def get_user(user_id: UUID, database: Session = Depends(get_database)):
 
 
 @router.put("/api/v1/user/{user_id}")
+@router.put("/{user_id}")
 async def update_user(user_id: UUID, new_user_information: UserBase,
                       database_session: Session = Depends(get_database)):
     stored_user = database_actions.get_user_by_id(database_session, user_id)
@@ -68,6 +74,7 @@ async def update_user(user_id: UUID, new_user_information: UserBase,
 
 
 @router.patch("/api/v1/user/{user_id}")
+@router.patch("/{user_id}")
 async def update_user_information(
     user_id: UUID, new_user_information: UserOptional,
     database_session: Session = Depends(get_database)):
@@ -86,6 +93,7 @@ async def update_user_information(
 
 
 @router.delete("/api/v1/user/{user_id}")
+@router.delete("/{user_id}")
 async def delete_user(user_id: UUID,
                       database_session: Session = Depends(get_database)):
     stored_user = database_actions.get_user_by_id(database_session, user_id)
