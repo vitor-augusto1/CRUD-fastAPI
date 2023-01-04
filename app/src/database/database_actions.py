@@ -1,9 +1,18 @@
 from utils import HashPassword
 from uuid import UUID
 from sqlalchemy.orm import Session
+from .connection import SessionLocal
 
 from .User_Model import User
 from user_schema import UserBase, UserCreate, UserOptional
+
+
+def get_database():
+    database_session = SessionLocal()
+    try:
+        yield database_session
+    finally:
+        database_session.close()
 
 
 def get_user_by_id(database_session: Session, user_id: UUID):
