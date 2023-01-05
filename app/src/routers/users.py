@@ -6,6 +6,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from user_schema import UserBase, UserCreate, UserOptional
+from oauth2 import get_current_user
+
+from user_schema import UserBase, UserCreate, UserOptional, ShowUser
 from database.connection import SessionLocal, engine
 from database import database_actions, User_Model
 
@@ -35,7 +38,9 @@ async def create_new_user(new_user: UserCreate,
 
 
 @router.get("/{user_id}")
-async def get_user(user_id: UUID, database: Session = Depends(database_actions.get_database)):
+async def get_user(user_id: UUID,
+                   database: Session = Depends(database_actions.get_database),
+                   current_user: User_Model.User = Depends(get_current_user)):
     user = database_actions.get_user_by_id(database, user_id)
     if user is None:
         raise HTTPException(status_code=404, detail={
@@ -48,7 +53,8 @@ async def get_user(user_id: UUID, database: Session = Depends(database_actions.g
 
 @router.put("/{user_id}")
 async def update_user(user_id: UUID, new_user_information: UserBase,
-                      database_session: Session = Depends(database_actions.get_database)):
+                      database_session: Session = Depends(database_actions.get_database),
+                      current_user: User_Model.User = Depends(get_current_user)):
     stored_user = database_actions.get_user_by_id(database_session, user_id)
     if stored_user is None:
         raise HTTPException(status_code=404, detail={
@@ -65,7 +71,8 @@ async def update_user(user_id: UUID, new_user_information: UserBase,
 @router.patch("/{user_id}")
 async def update_user_information(
     user_id: UUID, new_user_information: UserOptional,
-    database_session: Session = Depends(database_actions.get_database)):
+    database_session: Session = Depends(database_actions.get_database),
+    current_user: User_Model.User = Depends(get_current_user)):
 
     stored_user = database_actions.get_user_by_id(database_session, user_id)
     if stored_user is None:
@@ -81,8 +88,10 @@ async def update_user_information(
 
 
 @router.delete("/{user_id}")
-async def delete_user(user_id: UUID,
-                      database_session: Session = Depends(database_actions.get_database)):
+async def delete_user(
+    user_id: UUID,
+    database_session: Session = Depends(database_actions.get_database),
+    current_user: User_Model.User = Depends(get_current_user)):
     stored_user = database_actions.get_user_by_id(database_session, user_id)
     if stored_user is None:
         raise HTTPException(status_code=404, detail={
