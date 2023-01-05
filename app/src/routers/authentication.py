@@ -1,3 +1,4 @@
+from fastapi.security import OAuth2PasswordRequestForm
 from utils.token import create_jwt_access_token
 from login_schema import Login
 from database.User_Model import User
@@ -17,7 +18,8 @@ router = APIRouter(
 
 
 @router.post("/login")
-def login(login_request: Login, database: Session = Depends(database_actions.get_database)):
+def login(login_request: OAuth2PasswordRequestForm = Depends(),
+          database: Session = Depends(database_actions.get_database)):
     user = database.query(User).filter(User.email == login_request.username).first()
     if not user:
         raise HTTPException(status_code=404, detail={
