@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta
 from typing import Optional
 
-from token_schema import Token
+from fastapi import HTTPException
+
+from token_schema import Token, TokenData
 from jose import JWTError, jwt
 
 
@@ -19,3 +21,14 @@ def create_jwt_access_token(data: dict, expires_delta: Optional[timedelta] = Non
     data_to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(data_to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+
+def verify_jwt_token(token: str, credentials_exception: HTTPException):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str = payload.get("sub")
+        if email is None:
+            raise credentials_exception
+        token_data = TokenData(email=email)
+    except JWTError:
+        raise credentials_exception
