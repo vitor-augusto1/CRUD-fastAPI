@@ -1,11 +1,9 @@
-from typing import List
 from uuid import UUID
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from user_schema import UserBase, UserCreate, UserOptional
 from oauth2 import get_current_user
 
 from user_schema import UserBase, UserCreate, UserOptional, ShowUser
