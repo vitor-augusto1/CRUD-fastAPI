@@ -38,7 +38,7 @@ def create_new_user(database_session: Session, new_user: UserCreate):
     database_session.add(new_user)
     database_session.commit()
     database_session.refresh(new_user)
-    return new_user
+    return {"user": [new_user.first_name, new_user.email]}
 
 
 def update_user(database_session: Session, stored_user: User,
