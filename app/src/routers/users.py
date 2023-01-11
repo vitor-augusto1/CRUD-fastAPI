@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from oauth2 import get_current_user
 
-from user_schema import UserBase, UserCreate, UserOptional, ShowUser
+from user_schema import UserBase, UserCreate, UserOptional
 from database.connection import SessionLocal, engine
 from database import database_actions, User_Model
 
@@ -42,8 +42,16 @@ async def get_user(database: Session = Depends(database_actions.get_database),
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={
             "error": "User not found"
         })
+    show_user = UserBase(
+        first_name=user.first_name,
+        email=user.email,
+        middle_name=user.middle_name,
+        last_name=user.last_name,
+        age=user.age,
+        year=user.year
+    )
     return JSONResponse(status_code=status.HTTP_200_OK, content={
-        "success": jsonable_encoder(user)
+        "success": jsonable_encoder(show_user)
     })
 
 
