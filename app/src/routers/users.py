@@ -35,11 +35,10 @@ async def create_new_user(new_user: UserCreate,
     })
 
 
-@router.get("/{user_id}")
-async def get_user(user_id: UUID,
-                   database: Session = Depends(database_actions.get_database),
+@router.get("/me")
+async def get_user(database: Session = Depends(database_actions.get_database),
                    current_user: User_Model.User = Depends(get_current_user)):
-    user = database_actions.get_user_by_id(database, user_id)
+    user = database_actions.get_user_by_email(database, str(current_user.email))
     if user is None:
         raise HTTPException(status_code=404, detail={
             "error": "User not found"
@@ -49,11 +48,13 @@ async def get_user(user_id: UUID,
     })
 
 
-@router.put("/{user_id}")
-async def update_user(user_id: UUID, new_user_information: UserBase,
+@router.put("/me")
+async def update_user(new_user_information: UserBase,
                       database_session: Session = Depends(database_actions.get_database),
                       current_user: User_Model.User = Depends(get_current_user)):
-    stored_user = database_actions.get_user_by_id(database_session, user_id)
+    stored_user = database_actions.get_user_by_email(
+        database_session, str(current_user.email)
+    )
     if stored_user is None:
         raise HTTPException(status_code=404, detail={
             "error": "User not found"
@@ -66,13 +67,13 @@ async def update_user(user_id: UUID, new_user_information: UserBase,
     )
 
 
-@router.patch("/{user_id}")
-async def update_user_information(
-    user_id: UUID, new_user_information: UserOptional,
+@router.patch("/me")
+async def update_user_information(new_user_information: UserOptional,
     database_session: Session = Depends(database_actions.get_database),
     current_user: User_Model.User = Depends(get_current_user)):
-
-    stored_user = database_actions.get_user_by_id(database_session, user_id)
+    stored_user = database_actions.get_user_by_email(
+        database_session, str(current_user.email)
+    )
     if stored_user is None:
         raise HTTPException(status_code=404, detail={
             "error": "User not found"
@@ -85,12 +86,13 @@ async def update_user_information(
     )
 
 
-@router.delete("/{user_id}")
+@router.delete("/me")
 async def delete_user(
-    user_id: UUID,
     database_session: Session = Depends(database_actions.get_database),
     current_user: User_Model.User = Depends(get_current_user)):
-    stored_user = database_actions.get_user_by_id(database_session, user_id)
+    stored_user = database_actions.get_user_by_email(
+        database_session, str(current_user.email)
+    )
     if stored_user is None:
         raise HTTPException(status_code=404, detail={
             "error": "User not found"
