@@ -8,7 +8,6 @@ from pydantic import BaseModel
 class UserBase(BaseModel):
     first_name: str
     email: str
-    password: str
     middle_name: Optional[str]
     last_name: str
     age: int
@@ -16,6 +15,7 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
+    password: str
     id: UUID = uuid4()
 
 
