@@ -1,7 +1,7 @@
 from uuid import UUID
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from oauth2 import get_current_user
@@ -22,7 +22,6 @@ router = APIRouter(
 async def create_new_user(new_user: UserCreate,
                           database: Session = Depends(database_actions.get_database)):
     user = database_actions.get_user_by_email(database, new_user.email)
-    print(user)
     if user:
         raise HTTPException(status_code=400, detail={
             "error": "Email already registered"
@@ -40,10 +39,10 @@ async def get_user(database: Session = Depends(database_actions.get_database),
                    current_user: User_Model.User = Depends(get_current_user)):
     user = database_actions.get_user_by_email(database, str(current_user.email))
     if user is None:
-        raise HTTPException(status_code=404, detail={
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={
             "error": "User not found"
         })
-    return JSONResponse(status_code=200, content={
+    return JSONResponse(status_code=status.HTTP_200_OK, content={
         "success": jsonable_encoder(user)
     })
 
@@ -56,11 +55,11 @@ async def update_user(new_user_information: UserBase,
         database_session, str(current_user.email)
     )
     if stored_user is None:
-        raise HTTPException(status_code=404, detail={
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={
             "error": "User not found"
         })
     return JSONResponse(
-        status_code=200,
+        status_code=status.HTTP_200_OK,
         content=jsonable_encoder(database_actions.update_user(
             database_session, stored_user, new_user_information
         ))
@@ -75,11 +74,11 @@ async def update_user_information(new_user_information: UserOptional,
         database_session, str(current_user.email)
     )
     if stored_user is None:
-        raise HTTPException(status_code=404, detail={
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={
             "error": "User not found"
         })
     return JSONResponse(
-        status_code=200,
+        status_code=status.HTTP_200_OK,
         content=jsonable_encoder(database_actions.update_user(
             database_session, stored_user, new_user_information
         ))
@@ -94,9 +93,10 @@ async def delete_user(
         database_session, str(current_user.email)
     )
     if stored_user is None:
-        raise HTTPException(status_code=404, detail={
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={
             "error": "User not found"
         })
-    return JSONResponse(status_code=200, content=database_actions.delete_user(
+    return JSONResponse(
+        status_code=status.HTTP_200_OK, content=database_actions.delete_user(
         database_session, stored_user
     ))
