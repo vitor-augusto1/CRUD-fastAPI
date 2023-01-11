@@ -3,6 +3,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from utils.email_validation import check_email_validation
 
 from oauth2 import get_current_user
 
@@ -21,17 +22,18 @@ router = APIRouter(
 @router.post("/")
 async def create_new_user(new_user: UserCreate,
                           database: Session = Depends(database_actions.get_database)):
-    user = database_actions.get_user_by_email(database, new_user.email)
-    if user:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={
-            "error": "Email already registered"
+    if check_email_validation(new_user.email):
+        user = database_actions.get_user_by_email(database, new_user.email)
+        if user:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={
+                "error": "Email already registered"
+            })
+        user_created = database_actions.create_new_user(
+            database_session=database, new_user=new_user
+        )
+        return JSONResponse(status_code=status.HTTP_200_OK, content={
+            "success": jsonable_encoder(user_created)
         })
-    user_created = database_actions.create_new_user(
-        database_session=database, new_user=new_user
-    )
-    return JSONResponse(status_code=status.HTTP_200_OK, content={
-        "success": jsonable_encoder(user_created)
-    })
 
 
 @router.get("/me")
