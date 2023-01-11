@@ -21,12 +21,3 @@ class UserCreate(UserBase):
 
 class UserOptional(UserBase):
     __annotations__ = convert_to_optional(UserBase)
-
-
-class ShowUser(BaseModel):
-    first_name: str
-    email: str
-    middle_name: Optional[str]
-    last_name: str
-    age: int
-    year: int
