@@ -3,7 +3,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from utils.email_validation import check_email_validation
+from utils.email_validation import is_a_valid_email
 
 from oauth2 import get_current_user
 
@@ -22,7 +22,7 @@ router = APIRouter(
 @router.post("/")
 async def create_new_user(new_user: UserCreate,
                           database: Session = Depends(database_actions.get_database)):
-    if check_email_validation(new_user.email):
+    if is_a_valid_email(new_user.email):
         user = database_actions.get_user_by_email(database, new_user.email)
         if user:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={
