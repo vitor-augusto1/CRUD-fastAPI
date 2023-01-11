@@ -49,7 +49,7 @@ def update_user(database_session: Session, stored_user: User,
     database_session.add(stored_user)
     database_session.commit()
     database_session.refresh(stored_user)
-    return stored_user
+    return {"success": "User updated successfully"}
 
 
 def delete_user(database_session: Session, user: User):
