@@ -1,5 +1,4 @@
 from fastapi.security import OAuth2PasswordRequestForm
-from utils.token import create_jwt_access_token
 from database.User_Model import User
 
 from utils.verify_password import verify_user_password
