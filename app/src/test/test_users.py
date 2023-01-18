@@ -53,3 +53,19 @@ class TestCreateNewUser:
         )
         assert response.status_code == 200
 
+    def test_should_return_422_unprocessable_entity_on_missing_required_fields(self):
+        random_uuid = uuid4()
+        data = {
+            "email": f"test+{random_uuid}@email.com",
+            "middle_name": "Test",
+            "age": 19,
+            "password": "new_password"
+        }
+        headers = {'Content-Type': 'application/json'}
+        response = httpx.post(
+            "http://localhost:8000/api/v1/user/",
+            content=json.dumps(data),
+            headers=headers
+        )
+        print(response.json(), response.status_code)
+        assert response.status_code == 422
