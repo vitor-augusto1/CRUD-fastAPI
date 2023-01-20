@@ -24,7 +24,7 @@ def login(login_request: OAuth2PasswordRequestForm = Depends(),
             "error": "Invalid Credentials"
         })
     if not verify_user_password(user.password, login_request.password):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail={
             "error": "Invalid Credentials"
         })
     access_token = create_jwt_access_token(data={"sub": user.email})
