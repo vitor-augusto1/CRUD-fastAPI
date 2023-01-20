@@ -11,3 +11,12 @@ def test_should_return_404_not_found_on_invalid_credentials():
     assert response.status_code == 404
     assert response.json() == {'detail': {'error': 'Invalid Credentials'}}
 
+def test_should_return_401_unauthorized_on_invalid_password():
+    response = httpx.post(
+        "http://localhost:8000/login",
+        data={"username": "invalid@user.com", "password": "password"},
+        headers={'Content-Type': 'application/x-www-form-urlencoded'}
+    )
+    assert response.status_code == 401
+    assert response.json() == {'detail': {'error': 'Invalid Credentials'}}
+
