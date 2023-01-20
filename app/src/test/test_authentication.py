@@ -20,3 +20,18 @@ def test_should_return_401_unauthorized_on_invalid_password():
     assert response.status_code == 401
     assert response.json() == {'detail': {'error': 'Invalid Credentials'}}
 
+def test_should_return_a_valid_JWT_token_on_successful_login():
+    response = httpx.post(
+        "http://localhost:8000/login",
+        data={"username": "invalid@user.com", "password": "123"},
+        headers={'Content-Type': 'application/x-www-form-urlencoded'}
+    )
+    response_json = response.json()
+    jwt_token = response_json.get('access_token')
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate the token",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    response = verify_jwt_token(jwt_token, credentials_exception)
+    assert response.email == "invalid@user.com"
