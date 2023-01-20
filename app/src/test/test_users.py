@@ -1,6 +1,8 @@
 from uuid import uuid4
 import json
 
+from datetime import datetime
+
 import httpx
 
 class TestCreateNewUser:
@@ -34,7 +36,6 @@ class TestCreateNewUser:
         assert response.status_code == 400
         assert response.json() == {'detail': {'error': 'Email already registered'}}
 
-
     def test_should_return_422_unprocessable_entity_on_missing_required_fields(self):
         random_uuid = uuid4()
         data = {
@@ -52,15 +53,15 @@ class TestCreateNewUser:
         assert response.status_code == 422
 
     def test_should_return_200_on_successful_user_creation(self):
-        random_uuid = uuid4()
+        now = datetime.now()
         data = {
             "first_name": "Test user",
-            "email": f"test+{random_uuid}@email.com",
+            "email": f"test+{now.second}+test@email.com",
             "middle_name": "Test",
             "last_name": "Test",
             "age": 19,
             "year": 2003,
-            "password": "new_password"
+            "password": f"{now.day}+{now.hour}"
         }
         headers = {'Content-Type': 'application/json'}
         response = httpx.post(
