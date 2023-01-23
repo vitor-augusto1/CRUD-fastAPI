@@ -70,3 +70,6 @@ class TestCreateNewUser:
             headers=headers
         )
         assert response.status_code == 200
+
+
+class TestGetUserInformation:
