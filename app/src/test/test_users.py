@@ -73,3 +73,13 @@ class TestCreateNewUser:
 
 
 class TestGetUserInformation:
+    def test_should_return_401_unauthorized_on_invalid_JWT_token(self):
+        headers = {
+            "Authorization": "Bearer XXYxWv4Z4-L5K3nJvejYpNP8rjiMIfAjs"
+        }
+        response = httpx.get(
+            "http://localhost:8000/api/v1/user/me",
+            headers=headers
+        )
+        assert response.status_code == 401
+        assert response.json() == {'detail': 'Could not validate credentials'}
