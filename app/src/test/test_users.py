@@ -83,3 +83,11 @@ class TestGetUserInformation:
         )
         assert response.status_code == 401
         assert response.json() == {'detail': 'Could not validate credentials'}
+
+    def test_should_return_401_unauthorized_when_user_does_not_send_the_token(self):
+        response = httpx.get(
+            "http://localhost:8000/api/v1/user/me"
+        )
+        assert response.status_code == 401
+        assert response.json() == {"detail": "Not authenticated"}
+
