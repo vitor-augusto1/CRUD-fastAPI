@@ -91,3 +91,19 @@ class TestGetUserInformation:
         assert response.status_code == 401
         assert response.json() == {"detail": "Not authenticated"}
 
+    def test_should_return_200_ok_on_valid_token(self):
+        response = httpx.post(
+            "http://localhost:8000/login",
+            data={"username": "invalid@user.com", "password": "123"},
+            headers={'Content-Type': 'application/x-www-form-urlencoded'}
+        )
+        response_json = response.json()
+        jwt_token = response_json.get('access_token')
+        headers = {
+            "Authorization": f"Bearer {jwt_token}"
+        }
+        response = httpx.get(
+            "http://localhost:8000/api/v1/user/me",
+            headers=headers
+        )
+        assert response.status_code == 200
