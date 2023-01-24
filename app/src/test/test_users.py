@@ -137,3 +137,24 @@ class TestUpdateUserInformation:
         )
         assert response.status_code == 200
         assert response.json() == {'success': 'User updated successfully'}
+
+    def test_should_return_401_unauthorized_on_invalid_JWT_token(self):
+        headers = {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5c.DU2NTkzMX0",
+            "Content-Type": "application/json"
+        }
+        new_user_data = {
+            "first_name": "New Data",
+            "email": "new@new.com",
+            "middle_name": "New",
+            "last_name": "New Data",
+            "age": 19,
+            "year": 2003
+        }
+        response = httpx.put(
+            "http://localhost:8000/api/v1/user/me",
+            content=json.dumps(new_user_data),
+            headers=headers
+        )
+        assert response.status_code == 401
+        assert response.json() == {'detail': 'Could not validate credentials'}
