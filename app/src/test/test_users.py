@@ -94,7 +94,7 @@ class TestGetUserInformation:
     def test_should_return_200_ok_on_valid_token(self):
         response = httpx.post(
             "http://localhost:8000/login",
-            data={"username": "invalid@user.com", "password": "123"},
+            data={"username": "new@new.com", "password": "123"},
             headers={'Content-Type': 'application/x-www-form-urlencoded'}
         )
         response_json = response.json()
@@ -110,4 +110,30 @@ class TestGetUserInformation:
 
 
 class TestUpdateUserInformation:
-    pass
+    def test_should_return_200_ok_on_successful_update(self):
+        login_response = httpx.post(
+            "http://localhost:8000/login",
+            data={"username": "new@new.com", "password": "123"},
+            headers={'Content-Type': 'application/x-www-form-urlencoded'}
+        )
+        response_json = login_response.json()
+        jwt_token = response_json.get('access_token')
+        headers = {
+            "Authorization": f"Bearer {jwt_token}",
+            "Content-Type": "application/json"
+        }
+        new_user_data = {
+            "first_name": "New Data",
+            "email": "new@new.com",
+            "middle_name": "New",
+            "last_name": "New Data",
+            "age": 19,
+            "year": 2003
+        }
+        response = httpx.put(
+            "http://localhost:8000/api/v1/user/me",
+            content=json.dumps(new_user_data),
+            headers=headers
+        )
+        assert response.status_code == 200
+        assert response.json() == {'success': 'User updated successfully'}
