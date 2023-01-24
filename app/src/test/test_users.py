@@ -183,3 +183,7 @@ class TestUpdateUserInformation:
         )
         assert response.status_code == 200
         assert response.json() == {'success': 'User updated successfully'}
+
+
+class TestDeleteUser:
+    pass
