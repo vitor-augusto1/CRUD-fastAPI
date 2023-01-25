@@ -1,5 +1,5 @@
-from fastapi import HTTPException, status
 import httpx
+from fastapi import HTTPException, status
 from utils.token import verify_jwt_token
 
 

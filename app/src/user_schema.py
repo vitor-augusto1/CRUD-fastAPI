@@ -1,9 +1,9 @@
-import pydantic
-from utils.convert_to_optional import convert_to_optional
-
 from typing import Optional
 from uuid import UUID, uuid4
+
+import pydantic
 from pydantic import BaseModel
+from utils.convert_to_optional import convert_to_optional
 
 
 class UserBase(BaseModel):

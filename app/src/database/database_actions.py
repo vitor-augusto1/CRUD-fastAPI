@@ -1,11 +1,12 @@
-from sqlalchemy.exc import IntegrityError
-from utils import HashPassword
 from uuid import UUID
-from sqlalchemy.orm import Session, exc
-from .connection import SessionLocal
 
-from .User_Model import User
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session, exc
 from user_schema import UserBase, UserCreate, UserOptional
+from utils import HashPassword
+
+from .connection import SessionLocal
+from .User_Model import User
 
 
 def get_database():

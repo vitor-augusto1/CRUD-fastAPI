@@ -2,10 +2,8 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 from fastapi import HTTPException
-
-from token_schema import Token, TokenData
 from jose import JWTError, jwt
-
+from token_schema import Token, TokenData
 
 SECRET_KEY = '2c1f5d3baf228e5cd69d15df429ad032fea06f5d44ba2c773c4a710507e9ce0c'
 ALGORITHM = 'HS256'

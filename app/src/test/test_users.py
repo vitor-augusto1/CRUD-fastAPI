@@ -1,7 +1,6 @@
-from uuid import uuid4
 import json
-
 from datetime import datetime
+from uuid import uuid4
 
 import httpx
 
