@@ -30,7 +30,7 @@ async def create_new_user(
         )
         return JSONResponse(
             status_code=status.HTTP_200_OK,
-            content={'success': jsonable_encoder(user_created)},
+            content={'success': user_created},
         )
 
 
