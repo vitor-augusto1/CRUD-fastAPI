@@ -58,7 +58,6 @@ SECRET_KEY="<your_jwt_secret_key>"
 - [pytest](https://docs.pytest.org/en/latest/) - Used for testing
 - [httpx](https://www.python-httpx.org/) - Used for making HTTP requests
 - [sqlAlchemy](https://www.sqlalchemy.org/) - Used as ORM for database operations
-- [alembic](https://alembic.sqlalchemy.org/en/latest/) - Used for database migrations
 - [python-dotenv](https://pypi.org/project/python-dotenv/) - Used for handling environment variables
 - [bcrypt](https://pypi.org/project/bcrypt/) - Used for password hashing
 - [jwt](https://pypi.org/project/PyJWT/) - Used for JSON Web Tokens
