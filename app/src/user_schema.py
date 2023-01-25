@@ -5,6 +5,7 @@ from typing import Optional
 from uuid import UUID, uuid4
 from pydantic import BaseModel
 
+
 class UserBase(BaseModel):
     first_name: str
     email: str

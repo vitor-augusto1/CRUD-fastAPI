@@ -4,12 +4,12 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 url_object = URL.create(
-    drivername="mysql+pymysql",
-    username="root",
-    password="root",
-    host="localhost",
-    database="Users",
-    port=3306
+    drivername='mysql+pymysql',
+    username='root',
+    password='root',
+    host='localhost',
+    database='Users',
+    port=3306,
 )
 
 engine = create_engine(url_object)
