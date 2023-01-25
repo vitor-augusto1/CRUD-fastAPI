@@ -1,9 +1,9 @@
-from database import database_actions
-from database.connection import SessionLocal
-from database.User_Model import User
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
+
+from database import database_actions
+from database.User_Model import User
 from utils.token import create_jwt_access_token
 from utils.verify_password import verify_user_password
 

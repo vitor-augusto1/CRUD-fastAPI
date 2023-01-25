@@ -1,12 +1,10 @@
-from uuid import UUID
-
-from database import User_Model, database_actions
-from database.connection import SessionLocal, engine
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from oauth2 import get_current_user
 from sqlalchemy.orm import Session
+
+from database import User_Model, database_actions
+from oauth2 import get_current_user
 from user_schema import UserBase, UserCreate, UserOptional
 from utils.email_validation import is_a_valid_email
 
