@@ -8,6 +8,7 @@ import httpx
 class TestCreateNewUser:
     url = "http://localhost:8000/api/v1/user/"
     json_header = {'Content-Type': 'application/json'}
+
     def test_should_return_400_bad_request_on_invalid_email(self):
         data = {
             "first_name": "New User",
@@ -187,7 +188,3 @@ class TestUpdateUserInformation:
         )
         assert response.status_code == 200
         assert response.json() == {'success': 'User updated successfully'}
-
-
-class TestDeleteUser:
-    pass
