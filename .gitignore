@@ -6,3 +6,4 @@ app/src/utils/__pycache__
 app/src/database/__pycache__
 app/src/test/__init__.py
 app/src/test/__pycache__/
+app/src/.env
