@@ -6,6 +6,8 @@ from datetime import datetime
 import httpx
 
 class TestCreateNewUser:
+    url = "http://localhost:8000/api/v1/user/"
+    json_header = {'Content-Type': 'application/json'}
     def test_should_return_400_bad_request_on_invalid_email(self):
         data = {
             "first_name": "New User",
@@ -73,6 +75,9 @@ class TestCreateNewUser:
 
 
 class TestGetUserInformation:
+    url = "http://localhost:8000/api/v1/user/me"
+    login_url = "http://localhost:8000/login"
+    url_encoder_header = {'Content-Type': 'application/x-www-form-urlencoded'}
     def test_should_return_401_unauthorized_on_invalid_JWT_token(self):
         headers = {
             "Authorization": "Bearer XXYxWv4Z4-L5K3nJvejYpNP8rjiMIfAjs"
@@ -110,6 +115,9 @@ class TestGetUserInformation:
 
 
 class TestUpdateUserInformation:
+    url = "http://localhost:8000/api/v1/user/me"
+    login_url = "http://localhost:8000/login"
+    url_encoder_header = {'Content-Type': 'application/x-www-form-urlencoded'}
     def test_should_return_401_unauthorized_on_invalid_JWT_token(self):
         headers = {
             "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5c.DU2NTkzMX0",
