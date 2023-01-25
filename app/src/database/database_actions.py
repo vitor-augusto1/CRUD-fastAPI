@@ -1,7 +1,8 @@
 from uuid import UUID
 
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session, exc
+from sqlalchemy.orm import Session
+
 from user_schema import UserBase, UserCreate, UserOptional
 from utils import HashPassword
 
